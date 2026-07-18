@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HafalanQu</title>
+    <!-- Font diselaraskan dengan Halaman Utama (EB Garamond & Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Tema diselaraskan dengan Halaman Utama HafalanQu */
+            --primary-color: #003527;
+            --primary-hover: #064e3b;
+            --bg-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --text-main: #2b2b2b;
+            --text-secondary: #6e6e6e;
+            --border-color: #e0e0e0;
+            --error-color: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        .site-header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .site-header svg {
+            color: var(--primary-color);
+        }
+
+        .site-header .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+            letter-spacing: 0.5px;
+            font-family: 'EB Garamond', serif;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 30px;
+            padding-bottom: 40px;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            max-width: 640px;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        .header-card {
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            border-top: 10px solid var(--primary-color);
+            padding: 32px 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-card h1 {
+            margin: 0 0 12px 0;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-family: 'EB Garamond', serif;
+        }
+
+        .header-card p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .question-card {
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            padding: 24px 24px 24px 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            border: 1px solid transparent;
+            border-left: 6px solid transparent;
+        }
+
+        .question-card.active {
+            border-left-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.1);
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .required-asterisk {
+            color: var(--error-color);
+            margin-left: 4px;
+        }
+
+        /* Form elements styling */
+        .form-control {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 15px;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            background-color: transparent;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 9px;
+        }
+
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23003527%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px auto;
+            padding-right: 30px;
+        }
+
+        .ayat-container {
+            display: flex;
+            gap: 16px;
+        }
+
+        .ayat-container>div {
+            flex: 1;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 30px;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            background-color: #8bb39e;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message-box {
+            display: none;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .message-box.success {
+            display: block;
+            background-color: #e6f4ea;
+            color: #1e8e3e;
+            border: 1px solid #ceead6;
+        }
+
+        .message-box.error {
+            display: block;
+            background-color: #fce8e6;
+            color: #d93025;
+            border: 1px solid #fad2cf;
+        }
+
+        /* Footer Styling */
+        .site-footer {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            text-align: center;
+            padding: 24px;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        .site-footer p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .submit-btn.loading .spinner {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header dengan Logo Buku Terbuka -->
+    <header class="site-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-book-open">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </svg>
+        <div class="logo-text">HafalanQu</div>
+    </header>
+
+    <div class="main-content">
+        <div class="form-wrapper">
+            <form id="tahfidzForm">
+                <!-- Header Card -->
+                <div class="header-card">
+                    <h1>Setoran Tahfidz</h1>
+                    <p>Catatan Setoran Hafalan Al-Qur'an. Data akan terintegrasi langsung
+                        dengan Spreadsheet.</p>
+                    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
+                    <p style="color: var(--error-color); font-size: 13px;">* Menunjukkan pertanyaan yang wajib diisi</p>
+                </div>
+
+                <!-- Kelas -->
+                <div class="question-card" onclick="highlightCard(this)">
+                    <div class="question-title">Kelas <span class="required-asterisk">*</span></div>
+                    <select id="kelas" name="kelas" class="form-control" required>
+                        <option value="" disabled selected>Pilih Kelas</option>
+                        <option value="8A">8A</option>
+                        <option value="8B">8B</option>
+                        <option value="8C">8C</option>
+                        <option value="8D">8D</option>
+                    </select>
+                </div>
+
+                <!-- Nama Lengkap -->
+                <div class="question-card" onclick="highlightCard(this)">
+                    <div class="question-title">Nama Lengkap <span class="required-asterisk">*</span></div>
+                    <select id="namaLengkap" name="namaLengkap" class="form-control" required disabled>
+                        <option value="" disabled selected>Pilih Kelas Terlebih Dahulu</option>
+                    </select>
+                </div>
+
+                <!-- Riwayat Terakhir -->
+                <div id="historyCard" class="question-card" style="display: none; background-color: var(--bg-color); border-left-color: var(--primary-color);">
+                    <div class="question-title" style="margin-bottom: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; color: var(--primary-color);">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                            <path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>
+                        </svg>
+                        Riwayat Setoran Terakhir
+                    </div>
+                    <div id="historyLoading" style="display: none; font-size: 13px; color: var(--text-secondary); align-items: center;">
+                        <span class="spinner" style="display: inline-block; width: 14px; height: 14px; border-color: var(--primary-color) transparent var(--primary-color) transparent; margin-left: 0; margin-right: 8px;"></span>
+                        Mengambil data...
+                    </div>
+                    <div id="historyContent" style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                    </div>
+                </div>
+
+                <!-- Jenis Setoran -->
+                <div class="question-card" onclick="highlightCard(this)">
+                    <div class="question-title">Jenis Setoran <span class="required-asterisk">*</span></div>
+                    <select id="jenisSetoran" name="jenisSetoran" class="form-control" required>
+                        <option value="" disabled selected>Pilih Jenis Setoran</option>
+                        <option value="Ziyadah">Ziyadah</option>
+                        <option value="Murajaah">Murajaah</option>
+                    </select>
+                </div>
+
+                <!-- Surat -->
+                <div class="question-card" onclick="highlightCard(this)">
+                    <div class="question-title">Surat <span class="required-asterisk">*</span></div>
+                    <select id="surat" name="surat" class="form-control" required>
+                        <option value="" disabled selected>Pilih Surat</option>
+                    </select>
+                </div>
+
+                <!-- Ayat -->
+                <div class="question-card" onclick="highlightCard(this)">
+                    <div class="question-title">Ayat <span class="required-asterisk">*</span></div>
+                    <div class="ayat-container">
+                        <div>
+                            <label for="ayatMulai" style="font-size: 12px; color: var(--text-secondary);">Dari
+                                Ayat</label>
+                            <select id="ayatMulai" name="ayatMulai" class="form-control" required disabled>
+                                <option value="" disabled selected>-</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="ayatSampai" style="font-size: 12px; color: var(--text-secondary);">Sampai
+                                Ayat</label>
+                            <select id="ayatSampai" name="ayatSampai" class="form-control" required disabled>
+                                <option value="" disabled selected>-</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nilai -->
+                <div class="question-card" onclick="highlightCard(this)">
+                    <div class="question-title">Nilai <span class="required-asterisk">*</span></div>
+                    <select id="nilai" name="nilai" class="form-control" required>
+                        <option value="" disabled selected>Pilih Penilaian</option>
+                        <option value="Mumtaz">Mumtaz</option>
+                        <option value="Jayyid Jiddan">Jayyid Jiddan</option>
+                        <option value="Jayyid">Jayyid</option>
+                        <option value="Maqbul">Maqbul</option>
+                    </select>
+                </div>
+
+                <!-- Catatan -->
+                <div class="question-card" onclick="highlightCard(this)">
+                    <div class="question-title">Catatan (Opsional)</div>
+                    <input type="text" id="catatan" name="catatan" class="form-control" placeholder="Jawaban Anda">
+                </div>
+
+                <!-- Submit -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <button type="submit" id="submitBtn" class="submit-btn">
+                            Kirim <span class="spinner"></span>
+                        </button>
+                        <a href="../dashboard/" class="submit-btn" style="background-color: transparent; color: var(--primary-color); border: 1.5px solid var(--primary-color); text-decoration: none; padding: 11px 20px; display: inline-flex; align-items: center; justify-content: center; margin-top: 10px;">
+                            Lihat Dashboard
+                        </a>
+                    </div>
+                    <div id="statusMessage" class="message-box"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Hijau -->
+    <footer class="site-footer">
+        <p>&copy; 2026 HafalanQu. Aplikasi Pencatatan Setoran Tahfidz.</p>
+    </footer>
+
+    <script>
+        // Data Surat dan Jumlah Ayat (114 Surat)
+        const surahData = [
+            { no: 1, name: "Al-Fatihah", ayahs: 7 }, { no: 2, name: "Al-Baqarah", ayahs: 286 },
+            { no: 3, name: "Ali 'Imran", ayahs: 200 }, { no: 4, name: "An-Nisa'", ayahs: 176 },
+            { no: 5, name: "Al-Ma'idah", ayahs: 120 }, { no: 6, name: "Al-An'am", ayahs: 165 },
+            { no: 7, name: "Al-A'raf", ayahs: 206 }, { no: 8, name: "Al-Anfal", ayahs: 75 },
+            { no: 9, name: "At-Taubah", ayahs: 129 }, { no: 10, name: "Yunus", ayahs: 109 },
+            { no: 11, name: "Hud", ayahs: 123 }, { no: 12, name: "Yusuf", ayahs: 111 },
+            { no: 13, name: "Ar-Ra'd", ayahs: 43 }, { no: 14, name: "Ibrahim", ayahs: 52 },
+            { no: 15, name: "Al-Hijr", ayahs: 99 }, { no: 16, name: "An-Nahl", ayahs: 128 },
+            { no: 17, name: "Al-Isra'", ayahs: 111 }, { no: 18, name: "Al-Kahf", ayahs: 110 },
+            { no: 19, name: "Maryam", ayahs: 98 }, { no: 20, name: "Ta Ha", ayahs: 135 },
+            { no: 21, name: "Al-Anbiya'", ayahs: 112 }, { no: 22, name: "Al-Hajj", ayahs: 78 },
+            { no: 23, name: "Al-Mu'minun", ayahs: 118 }, { no: 24, name: "An-Nur", ayahs: 64 },
+            { no: 25, name: "Al-Furqan", ayahs: 77 }, { no: 26, name: "Asy-Syu'ara'", ayahs: 227 },
+            { no: 27, name: "An-Naml", ayahs: 93 }, { no: 28, name: "Al-Qasas", ayahs: 88 },
+            { no: 29, name: "Al-'Ankabut", ayahs: 69 }, { no: 30, name: "Ar-Rum", ayahs: 60 },
+            { no: 31, name: "Luqman", ayahs: 34 }, { no: 32, name: "As-Sajdah", ayahs: 30 },
+            { no: 33, name: "Al-Ahzab", ayahs: 73 }, { no: 34, name: "Saba'", ayahs: 54 },
+            { no: 35, name: "Fatir", ayahs: 45 }, { no: 36, name: "Ya Sin", ayahs: 83 },
+            { no: 37, name: "As-Saffat", ayahs: 182 }, { no: 38, name: "Sad", ayahs: 88 },
+            { no: 39, name: "Az-Zumar", ayahs: 75 }, { no: 40, name: "Ghafir", ayahs: 85 },
+            { no: 41, name: "Fussilat", ayahs: 54 }, { no: 42, name: "Asy-Syura", ayahs: 53 },
+            { no: 43, name: "Az-Zukhruf", ayahs: 89 }, { no: 44, name: "Ad-Dukhan", ayahs: 59 },
+            { no: 45, name: "Al-Jasiyah", ayahs: 37 }, { no: 46, name: "Al-Ahqaf", ayahs: 35 },
+            { no: 47, name: "Muhammad", ayahs: 38 }, { no: 48, name: "Al-Fath", ayahs: 29 },
+            { no: 49, name: "Al-Hujurat", ayahs: 18 }, { no: 50, name: "Qaf", ayahs: 45 },
+            { no: 51, name: "Az-Zariyat", ayahs: 60 }, { no: 52, name: "At-Tur", ayahs: 49 },
+            { no: 53, name: "An-Najm", ayahs: 62 }, { no: 54, name: "Al-Qamar", ayahs: 55 },
+            { no: 55, name: "Ar-Rahman", ayahs: 78 }, { no: 56, name: "Al-Waqi'ah", ayahs: 96 },
+            { no: 57, name: "Al-Hadid", ayahs: 29 }, { no: 58, name: "Al-Mujadilah", ayahs: 22 },
+            { no: 59, name: "Al-Hasyr", ayahs: 24 }, { no: 60, name: "Al-Mumtahanah", ayahs: 13 },
+            { no: 61, name: "As-Saff", ayahs: 14 }, { no: 62, name: "Al-Jumu'ah", ayahs: 11 },
+            { no: 63, name: "Al-Munafiqun", ayahs: 11 }, { no: 64, name: "At-Tagabun", ayahs: 18 },
+            { no: 65, name: "At-Talaq", ayahs: 12 }, { no: 66, name: "At-Tahrim", ayahs: 12 },
+            { no: 67, name: "Al-Mulk", ayahs: 30 }, { no: 68, name: "Al-Qalam", ayahs: 52 },
+            { no: 69, name: "Al-Haqqah", ayahs: 52 }, { no: 70, name: "Al-Ma'arij", ayahs: 44 },
+            { no: 71, name: "Nuh", ayahs: 28 }, { no: 72, name: "Al-Jinn", ayahs: 28 },
+            { no: 73, name: "Al-Muzzammil", ayahs: 20 }, { no: 74, name: "Al-Muddassir", ayahs: 56 },
+            { no: 75, name: "Al-Qiyamah", ayahs: 40 }, { no: 76, name: "Al-Insan", ayahs: 31 },
+            { no: 77, name: "Al-Mursalat", ayahs: 50 }, { no: 78, name: "An-Naba'", ayahs: 40 },
+            { no: 79, name: "An-Nazi'at", ayahs: 46 }, { no: 80, name: "'Abasa", ayahs: 42 },
+            { no: 81, name: "At-Takwir", ayahs: 29 }, { no: 82, name: "Al-Infitar", ayahs: 19 },
+            { no: 83, name: "Al-Mutaffifin", ayahs: 36 }, { no: 84, name: "Al-Insyiqaq", ayahs: 25 },
+            { no: 85, name: "Al-Buruj", ayahs: 22 }, { no: 86, name: "At-Tariq", ayahs: 17 },
+            { no: 87, name: "Al-A'la", ayahs: 19 }, { no: 88, name: "Al-Gasyiyah", ayahs: 26 },
+            { no: 89, name: "Al-Fajr", ayahs: 30 }, { no: 90, name: "Al-Balad", ayahs: 20 },
+            { no: 91, name: "Asy-Syams", ayahs: 15 }, { no: 92, name: "Al-Lail", ayahs: 21 },
+            { no: 93, name: "Ad-Duha", ayahs: 11 }, { no: 94, name: "Asy-Syarh", ayahs: 8 },
+            { no: 95, name: "At-Tin", ayahs: 8 }, { no: 96, name: "Al-'Alaq", ayahs: 19 },
+            { no: 97, name: "Al-Qadr", ayahs: 5 }, { no: 98, name: "Al-Bayyinah", ayahs: 8 },
+            { no: 99, name: "Az-Zalzalah", ayahs: 8 }, { no: 100, name: "Al-'Adiyat", ayahs: 11 },
+            { no: 101, name: "Al-Qari'ah", ayahs: 11 }, { no: 102, name: "At-Takasur", ayahs: 8 },
+            { no: 103, name: "Al-'Asr", ayahs: 3 }, { no: 104, name: "Al-Humazah", ayahs: 9 },
+            { no: 105, name: "Al-Fil", ayahs: 5 }, { no: 106, name: "Quraisy", ayahs: 4 },
+            { no: 107, name: "Al-Ma'un", ayahs: 7 }, { no: 108, name: "Al-Kausar", ayahs: 3 },
+            { no: 109, name: "Al-Kafirun", ayahs: 6 }, { no: 110, name: "An-Nasr", ayahs: 3 },
+            { no: 111, name: "Al-Lahab", ayahs: 5 }, { no: 112, name: "Al-Ikhlas", ayahs: 4 },
+            { no: 113, name: "Al-Falaq", ayahs: 5 }, { no: 114, name: "An-Nas", ayahs: 6 }
+        ];
+
+        const kelasData = {
+            "8A": [
+                "Halimatuz Zahro",
+                "Hasna Najla Ajwa",
+                "Nabila Mirabel Athalia",
+                "Nauri Khoirotun Nisa"
+            ],
+            "8B": [
+                "Afika Desyifa Wijayanti",
+                "Saskya Zahra Putri"
+            ],
+            "8C": [
+                "Chilam Hidayatul Ulya",
+                "Chilmi Hidayatul Ulya",
+                "Seftiyani Putri"
+            ],
+            "8D": [
+                "Akila Azzahra",
+                "Khaira Salsabil Firdausi",
+                "Nadin Septia Anjani",
+                "Qurrota Aini Humaira"
+            ]
+        };
+
+        // DOM Elements
+        const kelasSelect = document.getElementById('kelas');
+        const namaLengkapSelect = document.getElementById('namaLengkap');
+        const suratSelect = document.getElementById('surat');
+        const ayatMulaiSelect = document.getElementById('ayatMulai');
+        const ayatSampaiSelect = document.getElementById('ayatSampai');
+        const cards = document.querySelectorAll('.question-card');
+
+        // Setup Surat Options
+        surahData.forEach(surah => {
+            const option = document.createElement('option');
+            option.value = surah.name;
+            option.dataset.ayahs = surah.ayahs;
+            option.dataset.no = surah.no;
+            option.textContent = `${surah.no}. ${surah.name}`;
+            suratSelect.appendChild(option);
+        });
+
+        // Event Listeners
+        kelasSelect.addEventListener('change', function () {
+            const selectedKelas = this.value;
+            namaLengkapSelect.innerHTML = '<option value="" disabled selected>Pilih Nama</option>';
+
+            if (selectedKelas && kelasData[selectedKelas]) {
+                kelasData[selectedKelas].forEach(nama => {
+                    const option = document.createElement('option');
+                    option.value = nama;
+                    option.textContent = nama;
+                    namaLengkapSelect.appendChild(option);
+                });
+                namaLengkapSelect.disabled = false;
+            } else {
+                namaLengkapSelect.disabled = true;
+            }
+        });
+
+        suratSelect.addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const maxAyahs = parseInt(selectedOption.dataset.ayahs);
+            const surahNo = parseInt(selectedOption.dataset.no);
+
+            ayatMulaiSelect.innerHTML = '<option value="" disabled selected>Mulai</option>';
+            ayatSampaiSelect.innerHTML = '<option value="" disabled selected>Sampai</option>';
+
+            if (maxAyahs) {
+                for (let i = 1; i <= maxAyahs; i++) {
+                    const optMulai = document.createElement('option');
+                    optMulai.value = i;
+                    optMulai.textContent = i;
+                    ayatMulaiSelect.appendChild(optMulai);
+
+                    const optSampai = document.createElement('option');
+                    optSampai.value = i;
+                    optSampai.textContent = i;
+                    ayatSampaiSelect.appendChild(optSampai);
+                }
+                ayatMulaiSelect.disabled = false;
+                ayatSampaiSelect.disabled = false;
+
+                // Fitur Khusus: Juz 'Amma (Surat 78 ke atas) otomatis terpilih 1 - akhir
+                if (surahNo >= 78) {
+                    ayatMulaiSelect.value = 1;
+                    ayatSampaiSelect.value = maxAyahs;
+                    ayatMulaiSelect.dispatchEvent(new Event('change'));
+                }
+            } else {
+                ayatMulaiSelect.disabled = true;
+                ayatSampaiSelect.disabled = true;
+            }
+        });
+
+        ayatMulaiSelect.addEventListener('change', function () {
+            const mulai = parseInt(this.value);
+            Array.from(ayatSampaiSelect.options).forEach(opt => {
+                if (opt.value === "") return;
+                opt.disabled = parseInt(opt.value) < mulai;
+            });
+            if (parseInt(ayatSampaiSelect.value) < mulai) {
+                ayatSampaiSelect.value = "";
+            }
+        });
+
+        function highlightCard(element) {
+            cards.forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // --- SPREADSHEET INTEGRATION ---
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYELGH4BokMLRXtKBmk62T7QpP3CQyOaEsWEzHfI4l8QeCvGyar6pHlv1cE1vEdZAg/exec';
+
+        document.getElementById('tahfidzForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('submitBtn');
+            const statusMsg = document.getElementById('statusMessage');
+
+            btn.disabled = true;
+            btn.classList.add('loading');
+            statusMsg.className = 'message-box';
+
+            const formData = new FormData(this);
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    btn.disabled = false;
+                    btn.classList.remove('loading');
+                    if (response.ok) {
+                        statusMsg.className = 'message-box success';
+                        statusMsg.textContent = 'Data berhasil dikirim!';
+                        
+                        // Segarkan riwayat tanpa me-reset form
+                        namaLengkapSelect.dispatchEvent(new Event('change'));
+
+                        // Sembunyikan pesan sukses setelah 5 detik agar form rapi kembali
+                        setTimeout(() => {
+                            statusMsg.className = 'message-box';
+                            statusMsg.textContent = '';
+                        }, 5000);
+
+                        window.scrollTo(0, 0); // Gulir ke atas setelah berhasil
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .catch(error => {
+                    btn.disabled = false;
+                    btn.classList.remove('loading');
+                    statusMsg.className = 'message-box error';
+                    statusMsg.textContent = 'Terjadi kesalahan saat mengirim data. Silakan coba lagi.';
+                    console.error('Error!', error.message);
+                });
+        });
+
+        // --- FETCH HISTORY ---
+        namaLengkapSelect.addEventListener('change', function() {
+            const historyCard = document.getElementById('historyCard');
+            const historyLoading = document.getElementById('historyLoading');
+            const historyContent = document.getElementById('historyContent');
+            
+            if (this.value) {
+                historyCard.style.display = 'block';
+                historyLoading.style.display = 'flex';
+                historyContent.innerHTML = '';
+                
+                // Fetch to Apps Script using doGet
+                const url = GOOGLE_SCRIPT_URL + "?action=getHistory&nama=" + encodeURIComponent(this.value);
+                
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        historyLoading.style.display = 'none';
+                        if(data.result === 'success' && data.data.length > 0) {
+                            let html = '<ul style="margin: 0; padding-left: 20px; color: var(--text-main);">';
+                            data.data.forEach(h => {
+                                html += `<li><strong>${h.tanggal}</strong>: ${h.surat} (Ayat ${h.ayatMulai}-${h.ayatSampai}) - <span style="color: var(--primary-color); font-weight: 500;">${h.nilai}</span></li>`;
+                            });
+                            html += '</ul>';
+                            historyContent.innerHTML = html;
+
+                            // Autoselect Jenis Setoran, Surat & Ayat based on the most recent record
+                            const lastRecord = data.data[0];
+                            
+                            if (lastRecord.jenisSetoran) {
+                                document.getElementById('jenisSetoran').value = lastRecord.jenisSetoran;
+                            }
+
+                            if (lastRecord.surat) {
+                                Array.from(suratSelect.options).forEach(opt => {
+                                    if (opt.value === lastRecord.surat) {
+                                        suratSelect.value = lastRecord.surat;
+                                        suratSelect.dispatchEvent(new Event('change'));
+                                    }
+                                });
+                                // Select exact ayatMulai, ayatSampai, and nilai from the last record
+                                setTimeout(() => {
+                                    if (lastRecord.ayatMulai) {
+                                        ayatMulaiSelect.value = lastRecord.ayatMulai;
+                                        ayatMulaiSelect.dispatchEvent(new Event('change'));
+                                    }
+                                    if (lastRecord.ayatSampai) {
+                                        ayatSampaiSelect.value = lastRecord.ayatSampai;
+                                    }
+                                    if (lastRecord.nilai) {
+                                        document.getElementById('nilai').value = lastRecord.nilai;
+                                    }
+                                }, 50);
+                            }
+                        } else {
+                            historyContent.innerHTML = '<em>Belum ada riwayat setoran.</em>';
+                        }
+                    })
+                    .catch(err => {
+                        historyLoading.style.display = 'none';
+                        historyContent.innerHTML = '<em style="color: var(--error-color);">Gagal mengambil riwayat.</em>';
+                    });
+            } else {
+                historyCard.style.display = 'none';
+            }
+        });
+
+    </script>
+</body>
+
+</html>
