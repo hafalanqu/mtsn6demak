@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1280">
     <title>Dashboard HafalanQu</title>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -25,13 +25,19 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        html {
+            height: 100%;
+            background: var(--bg);
+        }
+
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background: var(--bg);
             color: var(--text-main);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            min-height: 100%;
+            min-width: 1200px;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -229,7 +235,12 @@
         .chart-proporsi { grid-column: 1; grid-row: 1; }
         .chart-kualitas { grid-column: 2; grid-row: 1; }
         .chart-tren { grid-column: 3 / 5; grid-row: 1; }
-        .chart-top20 { grid-column: 1 / 3; grid-row: 2; }
+        .chart-top20 { 
+            grid-column: 1 / 3; 
+            grid-row: 2; 
+            display: flex; 
+            flex-direction: column; 
+        }
         .chart-absensi { grid-column: 3 / 5; grid-row: 2; }
 
         .chart-small-wrap {
@@ -327,23 +338,6 @@
 
         .hidden { display: none !important; }
 
-        /* ═══ RESPONSIVE ═══ */
-        @media (max-width: 900px) {
-            .metrics-row { grid-template-columns: 1fr; }
-            .dash-grid {
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: auto auto auto;
-            }
-            .chart-proporsi { grid-column: 1; grid-row: 1; }
-            .chart-kualitas { grid-column: 2; grid-row: 1; }
-            .chart-tren { grid-column: 1 / 3; grid-row: 2; }
-            .chart-top20 { grid-column: 1 / 3; grid-row: 3; }
-        }
-        @media (max-width: 600px) {
-            .dash-grid { grid-template-columns: 1fr; }
-            .chart-proporsi, .chart-kualitas, .chart-tren, .chart-top20 { grid-column: 1; grid-row: auto; }
-            .top-bar { flex-direction: column; align-items: flex-start; }
-        }
     </style>
 </head>
 <body>
@@ -424,7 +418,9 @@
             </div>
             <div class="card chart-top20">
                 <div class="card-title"><span class="ci" style="background:#db2777;"></span> Top 20 Siswa — Ziyadah</div>
-                <canvas id="chartTop20" height="60"></canvas>
+                <div style="flex: 1; position: relative; min-height: 0; width: 100%;">
+                    <canvas id="chartTop20"></canvas>
+                </div>
             </div>
             <div class="card chart-absensi" style="padding: 14px 0 0 0; overflow: hidden;">
                 <div class="card-title" style="padding: 0 16px;"><span class="ci" style="background:#4f46e5;"></span> Rekap Absensi</div>
@@ -561,7 +557,7 @@
                 type:'bar',
                 data:{labels, datasets:[{label:'Ayat',data,backgroundColor:g,borderRadius:4,barPercentage:0.6}]},
                 options:{
-                    responsive:true, maintainAspectRatio:true,
+                    responsive:true, maintainAspectRatio:false,
                     plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a2e',titleFont:cf,bodyFont:cf,padding:8,cornerRadius:6}},
                     scales:{y:{beginAtZero:true,grid:{color:'#f3f4f6'},ticks:{font:cf,color:'#9ca3af'}},x:{grid:{display:false},ticks:{font:{...cf,size:10},color:'#9ca3af',maxRotation:45}}}
                 }
